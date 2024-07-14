@@ -60,10 +60,6 @@
     });
 
     background.draw();
-    background.width = 400;
-    background.height = 300;
-    pet.width = 400;
-    pet.height = 300;
     pet.animate();
   });
 

@@ -1,11 +1,21 @@
+import Shadow from '$lib/assets/images/shadow.png';
+
 export class Dino {
   constructor({ canvas, spritesheet, currentState, position, name }) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
     this.ctx.imageSmoothingEnabled = false;
+    this.canvas.width = 400;
+    this.canvas.height = 300;
 
     this.name = name;
     this.health = 100;
+
+    this.colors = {
+      success: '#4bb543',
+      warning: '#eed202',
+      danger: '#ff0000'
+    }
 
     this.isInitialized = false;
 
@@ -19,6 +29,9 @@ export class Dino {
     this.spritesheet = spritesheet;
     this.sprite = new Image();
     this.sprite.src = this.spritesheet.src;
+
+    this.shadow = new Image();
+    this.shadow.src = Shadow;
 
     this.position = position
     this.direction = 0;
@@ -36,11 +49,11 @@ export class Dino {
     }
     
     this.counter = 0;
-    this.scale = 2;
+    this.scale = 3;
     
     this.position = {
       x: position.x - (this.frameWidth * this.scale) / 2,
-      y: position.y - this.frameHeight * this.scale - 10,
+      y: this.canvas.height - this.frameHeight * this.scale - 40,
       futureX: Math.random() * this.canvas.width - this.frameWidth
     };
 
@@ -93,8 +106,17 @@ export class Dino {
       this.frameHeight * this.scale
     );
 
-    this.ctx.fillStyle = '#32CD32';
-    this.ctx.font = "bold 18px Pixelify Sans";
+    this.ctx.drawImage(
+      this.shadow,
+
+      this.position.x,
+      this.position.y,
+      this.shadow.width * this.scale,
+      this.shadow.height * this.scale
+    )
+
+    this.ctx.fillStyle = this.colors.success;
+    this.ctx.font = "bold 24px Pixelify Sans";
     this.ctx.fillText(this.name, this.position.x, this.position.y);
     this.ctx.strokeStyle = '#000';
     this.ctx.strokeText(this.name, this.position.x, this.position.y);
@@ -107,21 +129,38 @@ export class Dino {
     
     // Text
     this.ctx.fillStyle = '#fff';
-    this.ctx.font = "12px Pixelify Sans";
-    this.ctx.fillText(`Health: ${this.health}`, 8, 10);
+    this.ctx.font = "20px Pixelify Sans";
+    this.ctx.fillText('Health:', 8, 18);
+    
+    // Health
+    if (this.health > 50) {
+      this.ctx.fillStyle = '#fff';
+    } else if (this.health > 25) {
+        this.ctx.fillStyle = this.colors.warning;
+    } else {
+      this.ctx.fillStyle = this.colors.danger;
+    }
+    this.ctx.font = "bold 20px Pixelify Sans";
+    this.ctx.fillText(this.health, 85, 18);
 
     // Outline
     this.ctx.fillStyle = "#888";
     this.ctx.strokeStyle = "#000";
     this.ctx.beginPath();
-    this.ctx.roundRect(8, 12, 150, 8, [6]);
+    this.ctx.roundRect(8, 22, 150, 8, [6]);
     this.ctx.fill();
     this.ctx.stroke();
 
     // Health bar
-    this.ctx.fillStyle = "red";
+    if (this.health > 50) {
+      this.ctx.fillStyle = this.colors.success;
+    } else if (this.health > 25) {
+        this.ctx.fillStyle = this.colors.warning;
+    } else {
+      this.ctx.fillStyle = this.colors.danger;
+    }
     this.ctx.beginPath();
-    this.ctx.roundRect(10, 14, healthPercentage, 4, [6]);
+    this.ctx.roundRect(10, 24, healthPercentage, 4, [6]);
     this.ctx.fill();
   }
   clearCanvas() {
@@ -142,6 +181,8 @@ export class Background {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
     this.ctx.imageSmoothingEnabled = false;
+    this.canvas.width = 400;
+    this.canvas.height = 300;
 
     this.spritesheet = spritesheet;
     this.sprite = new Image();
@@ -155,8 +196,8 @@ export class Background {
         this.sprite,
         this.position.x,
         this.position.y,
-        325,
-        160
+        400,
+        300
       );
     })
   }
