@@ -71,17 +71,11 @@ export class Dino {
         this.counter = 0;
         this.interval = Math.random() * 300 + 50;
         this.position.futureX = Math.random() * this.canvas.width - this.frameWidth;
+        chrome.storage.local.set({ location: this.position.futureX }, function() {});
       }
     }
 
     this.counter++;
-  }
-  move() {
-    if (this.position.x < this.position.futureX) {
-      this.position.x += this.speed.walk;
-    } else if (this.position.x > this.position. futureX) {
-      this.position.x -= this.speed.walk;
-    }
   }
   draw() {
     this.ctx.drawImage(
@@ -99,8 +93,10 @@ export class Dino {
     );
 
     this.ctx.fillStyle = '#32CD32';
-    this.ctx.font = "14px Pixelify Sans";
+    this.ctx.font = "bold 18px Pixelify Sans";
     this.ctx.fillText(this.name, this.position.x, this.position.y);
+    this.ctx.strokeStyle = '#000';
+    this.ctx.strokeText(this.name, this.position.x, this.position.y);
   }
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
