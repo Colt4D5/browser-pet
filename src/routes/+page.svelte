@@ -14,11 +14,6 @@
   let bgCanvas = $state();
   let fgCanvas = $state();
 
-  const canvasSize = {
-    width: 400,
-    height: 300
-  }
-
   onMount(() => {
     pet = new Dino({ 
       canvas: fgCanvas,

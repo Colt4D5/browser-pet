@@ -5,6 +5,7 @@ export class Dino {
     this.ctx.imageSmoothingEnabled = false;
 
     this.name = name;
+    this.health = 100;
 
     this.isInitialized = false;
 
@@ -97,6 +98,31 @@ export class Dino {
     this.ctx.fillText(this.name, this.position.x, this.position.y);
     this.ctx.strokeStyle = '#000';
     this.ctx.strokeText(this.name, this.position.x, this.position.y);
+
+    this.drawHealthBar();
+  }
+  drawHealthBar() {
+    const barLength = 146
+    const healthPercentage = Math.ceil(barLength / 100 * this.health);
+    
+    // Text
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = "12px Pixelify Sans";
+    this.ctx.fillText(`Health: ${this.health}`, 8, 10);
+
+    // Outline
+    this.ctx.fillStyle = "#888";
+    this.ctx.strokeStyle = "#000";
+    this.ctx.beginPath();
+    this.ctx.roundRect(8, 12, 150, 8, [6]);
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    // Health bar
+    this.ctx.fillStyle = "red";
+    this.ctx.beginPath();
+    this.ctx.roundRect(10, 14, healthPercentage, 4, [6]);
+    this.ctx.fill();
   }
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
