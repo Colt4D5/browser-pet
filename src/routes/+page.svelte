@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
   import { Dino, Background } from './Canvas.svelte.js';
   import SettingsIcon from '$lib/assets/images/settings-icon.svg?raw';
+  import FoodIcon from '$lib/assets/images/give-food.svg?raw';
   import greenDino from '$lib/assets/images/DinoSprites - doux 2.png';
   import backgroundImg from '$lib/assets/images/background.jpg';
 
@@ -84,6 +85,10 @@
   function toggleSettings() {
     settingsOpen = true;
   }
+
+  function giveFood() {
+    pet.giveFood();
+  }
 </script>
 
 {#if !isInitialized}
@@ -93,7 +98,7 @@
     <button onclick={setPetName}>Save</button>
   </div>
 {:else}
-  <button id="settings-btn" onclick={toggleSettings}>
+  <button id="settings-btn" onclick={toggleSettings} class="no-btn-appearance">
     {@html SettingsIcon}
   </button>
 {/if}
@@ -118,6 +123,10 @@
   bind:this={fgCanvas}
 ></canvas>
 
+<button id="food-btn" onclick={giveFood} class="no-btn-appearance">
+  {@html FoodIcon}
+</button>
+
 <style>
   .popup {
     position: absolute;
@@ -139,14 +148,28 @@
     z-index: 2;
   }
   #settings-btn {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
     position: absolute;
     right: 1rem;
     top: 1rem;
     color: #fff;
+  }
+  #food-btn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    color: #fff;
+    background-color: #444;
+    padding: 0.5rem;
+    border-radius: 50%;
+    &:hover {
+      background-color: #555;
+    }
+  }
+  .no-btn-appearance {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     z-index: 3;
   }
   canvas {
