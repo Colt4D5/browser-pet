@@ -261,18 +261,16 @@ export class Dino {
   calculateHealth(timestamp) {
     const now = Date.now();
     const elapsed = now - timestamp;
-    const hour = 3600000; // 1 hour in milliseconds
-    const day = 86400000; // 24 hours in milliseconds
-    // const hour = 36; // test time
-    // const day = 240000; // test time
+    const threeHours = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
+    const day = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-    if (this.hunger > 0) {
-      this.health = 100; // Full health if less than 1 hour has passed
+    if (elapsed < threeHours) {
+      this.health = 100; // Full health if less than 3 hours have passed
     } else if (elapsed >= day) {
       this.health = 0; // No health if 24 hours or more have passed
     } else {
-      // Linear decrease from 100 to 0 over 23 hours
-      const healthLoss = 100 * (elapsed - hour) / (day - hour);
+      // Linear decrease from 100 to 0 over 21 hours (from 3h to 24h mark)
+      const healthLoss = 100 * (elapsed - threeHours) / (day - threeHours);
       this.health = Math.round(100 - healthLoss);
     }
   }
