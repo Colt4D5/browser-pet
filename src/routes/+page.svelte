@@ -47,14 +47,14 @@
       position: { x: 0, y: 0 }
     });
 
-    chrome.storage.local.get(['petName'], function(result) {
+    browser.storage.local.get(['petName']).then(function(result) {
       petName = result.petName;
       pet.name = petName;
       isInitialized = true;
       pet.isInitialized = true;
     });
 
-    chrome.storage.local.get(['location'], function(result) {
+    browser.storage.local.get(['location']).then(function(result) {
       if ('location' in result) {
         pet.position.x = result.location;
       }
@@ -66,7 +66,7 @@
 
   function updatePetName() {
     pet.name = petName;
-    chrome.storage.local.set({ petName }, function() {
+    browser.storage.local.set({ petName }).then(function() {
       console.log(`Pet name saved as ${petName}`);
     });
     settingsOpen = false;
@@ -77,7 +77,7 @@
     isInitialized = true;
     pet.isInitialized = true;
 
-    chrome.storage.local.set({ petName }, function() {
+    browser.storage.local.set({ petName }).then(function() {
       console.log(`Pet name saved as ${petName}`);
     });
   }

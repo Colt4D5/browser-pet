@@ -13,9 +13,9 @@ export class Dino {
     this.health = 100;
     this.isReplenishing = false;
 
-    chrome.storage.local.get(['lastMeal'], function(result) {
+    browser.storage.local.get(['lastMeal']).then(function(result) {
       if (!('lastMeal' in result)) {
-        chrome.storage.local.set({ lastMeal: Date.now() }, function() {});
+        browser.storage.local.set({ lastMeal: Date.now() }).then(function() {});
       }
     });
 
@@ -97,7 +97,7 @@ export class Dino {
         this.counter = 0;
         this.interval = Math.random() * 300 + 50;
         this.position.futureX = Math.random() * this.canvas.width - this.frameWidth;
-        chrome.storage.local.set({ location: this.position.futureX }, function() {});
+        browser.storage.local.set({ location: this.position.futureX }).then(function() {});
       }
     }
 
@@ -207,7 +207,7 @@ export class Dino {
     this.ctx.beginPath();
     this.ctx.roundRect(10, 24, healthPercentage, 4, [6]);
     this.ctx.fill();
-    chrome.storage.local.get(['lastMeal'], (result) => {
+    browser.storage.local.get(['lastMeal']).then((result) => {
       if ('lastMeal' in result) {
         this.calculateHealth(result.lastMeal);
       }
@@ -252,7 +252,7 @@ export class Dino {
     this.ctx.beginPath();
     this.ctx.roundRect(10, 52, hungerPercentage, 4, [6]);
     this.ctx.fill();
-    chrome.storage.local.get(['lastMeal'], (result) => {
+    browser.storage.local.get(['lastMeal']).then((result) => {
       if ('lastMeal' in result) {
         this.calculateHunger(result.lastMeal);
       }
@@ -295,7 +295,7 @@ export class Dino {
     const y = radius * -1;
     this.food.push({ x, y, radius, xVel: 0, yVel: 0, isGrounded: false });
 
-    chrome.storage.local.set({ lastMeal: Date.now() }, function() {});
+    browser.storage.local.set({ lastMeal: Date.now() }).then(function() {});
 
     this.isReplenishing = true;
   }
